@@ -3,12 +3,13 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
+
+dotenv.config();
+
 import authRoutes from './routes/authRoutes.js';
 import scenarioRoutes from './routes/scenarioRoutes.js';
 import ventureRoutes from './routes/ventureRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
-
-dotenv.config();
 
 const app = express();
 

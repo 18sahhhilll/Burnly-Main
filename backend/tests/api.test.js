@@ -165,7 +165,7 @@ describe('Backend API Integration Tests', () => {
       });
 
       const invalidRefreshToken = jwt.sign(
-        { id: mockUserId },
+        { id: mockUserId, sessionId: 'sess-test-123' },
         process.env.JWT_REFRESH_SECRET || 'burnly_super_secret_refresh_jwt_key'
       );
 

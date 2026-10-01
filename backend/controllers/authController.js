@@ -6,8 +6,8 @@ import Venture from '../models/Venture.js';
 import Scenario from '../models/Scenario.js';
 import Report from '../models/Report.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'burnly_super_secret_jwt_key_change_in_production';
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'burnly_super_secret_refresh_jwt_key';
+const getJwtSecret = () => process.env.JWT_SECRET || 'burnly_super_secret_jwt_key_change_in_production';
+const getJwtRefreshSecret = () => process.env.JWT_REFRESH_SECRET || 'burnly_super_secret_refresh_jwt_key';
 
 const hashToken = (token) => {
   if (!token) return '';
@@ -15,13 +15,13 @@ const hashToken = (token) => {
 };
 
 const generateAccessToken = (id) => {
-  return jwt.sign({ id }, JWT_SECRET, {
+  return jwt.sign({ id }, getJwtSecret(), {
     expiresIn: '30m',
   });
 };
 
 const generateRefreshToken = (id, sessionId) => {
-  return jwt.sign({ id, sessionId }, JWT_REFRESH_SECRET, {
+  return jwt.sign({ id, sessionId }, getJwtRefreshSecret(), {
     expiresIn: '7d',
   });
 };
@@ -140,7 +140,7 @@ export const refreshToken = async (req, res) => {
 
     let decoded = null;
     try {
-      decoded = jwt.verify(token, JWT_REFRESH_SECRET);
+      decoded = jwt.verify(token, getJwtRefreshSecret());
     } catch {
       return res.status(401).json({ error: 'Invalid or expired refresh token' });
     }
