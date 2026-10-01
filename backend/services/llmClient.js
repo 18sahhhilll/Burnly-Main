@@ -8,6 +8,9 @@ const getGenAI = () => {
     if (!apiKey) {
       throw new Error('GEMINI_API_KEY environment variable is not configured');
     }
+    if (apiKey.startsWith('AQ.') || apiKey.startsWith('ya29.')) {
+      console.warn('[LLM Client] Warning: GEMINI_API_KEY appears to be an OAuth token. Google AI Studio API Keys start with "AIzaSy...". Get a free key at https://aistudio.google.com');
+    }
     genAI = new GoogleGenerativeAI(apiKey);
   }
   return genAI;
