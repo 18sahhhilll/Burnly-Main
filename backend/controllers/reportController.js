@@ -92,6 +92,12 @@ export const getReports = async (req, res) => {
     const query = { userId: req.user.id };
 
     if (ventureId) {
+      if (ventureId === 'sample-venture-1') {
+        return res.json([]);
+      }
+      if (!mongoose.Types.ObjectId.isValid(ventureId)) {
+        return res.status(404).json({ error: 'Report not found or unauthorized' });
+      }
       query.ventureId = ventureId;
     }
 

@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Scenario from '../models/Scenario.js';
 import Venture from '../models/Venture.js';
 
@@ -7,6 +8,12 @@ export const getScenarios = async (req, res) => {
     const query = { userId: req.user.id };
 
     if (ventureId) {
+      if (ventureId === 'sample-venture-1') {
+        return res.json([]);
+      }
+      if (!mongoose.Types.ObjectId.isValid(ventureId)) {
+        return res.status(404).json({ error: 'Venture profile not found or unauthorized' });
+      }
       // Verify ventureId belongs to caller
       const venture = await Venture.findOne({ _id: ventureId, userId: req.user.id });
       if (!venture) {
