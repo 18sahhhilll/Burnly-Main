@@ -36,21 +36,51 @@ export function cleanGroundingUrl(rawUrl) {
  */
 export const llmClient = {
   generateReportLLM: async ({ prompt, modelName, enableGrounding = false }) => {
-    const targetModel = modelName || process.env.LLM_MODEL || 'gemini-1.5-flash';
-    const modelOptions = {
-      model: targetModel,
-      generationConfig: {
-        responseMimeType: 'application/json',
-        temperature: 0.2,
-      },
-    };
+    const requestedModel = modelName || process.env.LLM_MODEL || 'gemini-2.5-flash';
+    const fallbackModels = [
+      requestedModel,
+      'gemini-2.5-flash',
+      'gemini-2.0-flash',
+      'gemini-1.5-flash-latest',
+      'gemini-1.5-flash',
+      'gemini-1.5-pro',
+    ];
 
-    if (enableGrounding) {
-      modelOptions.tools = [{ googleSearch: {} }];
+    const candidateModels = [...new Set(fallbackModels)];
+    let result = null;
+    let lastError = null;
+
+    for (const targetModel of candidateModels) {
+      try {
+        const modelOptions = {
+          model: targetModel,
+          generationConfig: {
+            responseMimeType: 'application/json',
+            temperature: 0.2,
+          },
+        };
+
+        if (enableGrounding) {
+          modelOptions.tools = [{ googleSearch: {} }];
+        }
+
+        const model = getGenAI().getGenerativeModel(modelOptions);
+        result = await model.generateContent(prompt);
+        if (result) break;
+      } catch (err) {
+        lastError = err;
+        if (err.message && (err.message.includes('404') || err.message.includes('not found'))) {
+          console.warn(`[LLM Client] Model ${targetModel} not found. Retrying with next fallback...`);
+          continue;
+        }
+        throw err;
+      }
     }
 
-    const model = getGenAI().getGenerativeModel(modelOptions);
-    const result = await model.generateContent(prompt);
+    if (!result && lastError) {
+      throw lastError;
+    }
+
     const response = result.response;
     const responseText = response.text();
     const usageMetadata = response.usageMetadata || {};
