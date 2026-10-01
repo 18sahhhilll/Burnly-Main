@@ -1,4 +1,12 @@
 import mongoose from 'mongoose';
+import dns from 'dns';
+
+// Force Node.js DNS resolver to use Google Public DNS (8.8.8.8) to bypass ISP/Router SRV query blocks
+try {
+  dns.setServers(['8.8.8.8', '8.8.4.4']);
+} catch (dnsErr) {
+  console.warn('DNS setServers notice:', dnsErr.message);
+}
 
 const connectDB = async () => {
   try {
