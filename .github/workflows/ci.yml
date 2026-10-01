@@ -43,7 +43,9 @@ jobs:
         run: npm ci
         working-directory: ./frontend
       - name: Run Frontend Tests
-        run: npm test
+        run: |
+          npm test
+          node --test src/tests/*.test.js
         working-directory: ./frontend
       - name: Build Production Frontend Assets
         run: npm run build
