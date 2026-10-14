@@ -360,7 +360,7 @@ export const LandingPage = () => {
                     width={40}
                     height={40}
                     loading="lazy"
-                    className="w-10 h-10 rounded-full object-cover border border-white/10"
+                    className="w-10 h-10 rounded-full object-cover border border-white/10 bg-[#151D2A] shrink-0"
                   />
                   <div>
                     <h4 className="text-xs font-bold text-white">Priya Sharma</h4>
@@ -383,7 +383,7 @@ export const LandingPage = () => {
                     width={40}
                     height={40}
                     loading="lazy"
-                    className="w-10 h-10 rounded-full object-cover border border-white/10"
+                    className="w-10 h-10 rounded-full object-cover border border-white/10 bg-[#151D2A] shrink-0"
                   />
                   <div>
                     <h4 className="text-xs font-bold text-white">Arun Patel</h4>
@@ -406,7 +406,7 @@ export const LandingPage = () => {
                     width={40}
                     height={40}
                     loading="lazy"
-                    className="w-10 h-10 rounded-full object-cover border border-white/10"
+                    className="w-10 h-10 rounded-full object-cover border border-white/10 bg-[#151D2A] shrink-0"
                   />
                   <div>
                     <h4 className="text-xs font-bold text-white">Elena Rostova</h4>

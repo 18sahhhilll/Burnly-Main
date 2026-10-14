@@ -53,7 +53,7 @@ export const HeroDashboardMockup = () => {
             <div className="w-3 h-3 rounded-full bg-rose-500/80 border border-rose-400/40" />
             <div className="w-3 h-3 rounded-full bg-amber-500/80 border border-amber-400/40" />
             <div className="w-3 h-3 rounded-full bg-emerald-500/80 border border-emerald-400/40" />
-            <span className="ml-2 text-[11px] font-mono text-gray-400 font-medium">
+            <span className="ml-2 text-[11px] font-mono text-gray-400 font-medium truncate max-w-[130px] sm:max-w-none">
               burnly.app/simulator — PayFlow India (Seed)
             </span>
           </div>

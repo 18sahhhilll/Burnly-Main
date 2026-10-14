@@ -201,7 +201,7 @@ export const AppLayout = ({ children }) => {
       {/* Main content area */}
       <div className="flex flex-col flex-1 lg:ml-60 min-h-screen">
         {/* Top Header */}
-        <header className="sticky top-0 z-30 bg-[#0B1220]/95 backdrop-blur-sm border-b border-[#222E42] h-14 flex items-center px-4 gap-4">
+        <header className="sticky top-0 z-30 bg-[#0B1220]/95 backdrop-blur-sm border-b border-[#222E42] h-14 flex items-center px-3 sm:px-4 gap-2 sm:gap-4">
           {/* Mobile menu toggle */}
           <button
             className="lg:hidden text-gray-400 hover:text-white p-1 rounded-md transition-colors"
@@ -212,12 +212,12 @@ export const AppLayout = ({ children }) => {
           </button>
 
           {/* Venture Selector */}
-          <div className="flex items-center gap-1.5 bg-[#1A2436] px-2.5 py-1.5 rounded-lg border border-[#222E42] min-w-0 transition-colors hover:border-gray-600">
+          <div className="hidden xs:flex items-center gap-1.5 bg-[#1A2436] px-2 sm:px-2.5 py-1.5 rounded-lg border border-[#222E42] min-w-0 transition-colors hover:border-gray-600">
             <Building2 className="w-3.5 h-3.5 text-blue-400 shrink-0" />
             <select
               value={activeVentureId || ''}
               onChange={(e) => setActiveVentureId(e.target.value)}
-              className="bg-transparent text-xs text-white focus:outline-none max-w-[140px] truncate cursor-pointer"
+              className="bg-transparent text-xs text-white focus:outline-none max-w-[100px] sm:max-w-[140px] truncate cursor-pointer"
             >
               {ventures.map((v) => (
                 <option key={v._id || v.id} value={v._id || v.id} className="bg-[#151D2A]">
@@ -232,7 +232,7 @@ export const AppLayout = ({ children }) => {
             <select
               value={activeScenarioId || ''}
               onChange={(e) => setActiveScenarioId(e.target.value)}
-              className="bg-[#1A2436] border border-[#222E42] text-xs text-white rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-blue-500 max-w-[160px] truncate cursor-pointer hover:border-gray-600 transition-colors"
+              className="bg-[#1A2436] border border-[#222E42] text-xs text-white rounded-lg px-2 sm:px-2.5 py-1.5 focus:outline-none focus:border-blue-500 max-w-[130px] sm:max-w-[160px] truncate cursor-pointer hover:border-gray-600 transition-colors"
             >
               {scenarios.map((s) => (
                 <option key={s.id || s._id} value={s.id || s._id} className="bg-[#151D2A]">
@@ -243,7 +243,7 @@ export const AppLayout = ({ children }) => {
             <button
               onClick={() => setIsCreateModalOpen(true)}
               title="Create New Scenario"
-              className="p-1.5 bg-blue-950/80 hover:bg-blue-900 text-blue-300 border border-blue-800/60 rounded-lg transition-all active:scale-95 flex items-center gap-1 text-xs px-2.5 cursor-pointer"
+              className="p-1.5 bg-blue-950/80 hover:bg-blue-900 text-blue-300 border border-blue-800/60 rounded-lg transition-all active:scale-95 flex items-center gap-1 text-xs px-2 sm:px-2.5 cursor-pointer shrink-0"
             >
               <Plus className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">New</span>
@@ -251,7 +251,7 @@ export const AppLayout = ({ children }) => {
             <button
               onClick={() => activeScenario && setDeletingScenario(activeScenario)}
               title="Delete Active Scenario"
-              className="p-1.5 bg-[#1A2436] hover:bg-red-950/50 text-gray-400 hover:text-red-400 border border-[#222E42] hover:border-red-900/60 rounded-lg transition-all active:scale-95 cursor-pointer"
+              className="hidden sm:block p-1.5 bg-[#1A2436] hover:bg-red-950/50 text-gray-400 hover:text-red-400 border border-[#222E42] hover:border-red-900/60 rounded-lg transition-all active:scale-95 cursor-pointer shrink-0"
             >
               <Trash2 className="w-3.5 h-3.5" />
             </button>
