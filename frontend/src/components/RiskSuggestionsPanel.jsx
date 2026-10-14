@@ -1,6 +1,8 @@
 import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, CheckCircle2, Info, Lightbulb, ShieldAlert } from 'lucide-react';
 import { generateSuggestions } from '../lib/ruleEngine';
+import { staggerContainer, staggerItem } from '../lib/animations.js';
 
 export const RiskSuggestionsPanel = ({ scenarioData, simulationResult }) => {
   const suggestions = generateSuggestions(scenarioData || {}, simulationResult || {});
@@ -49,18 +51,27 @@ export const RiskSuggestionsPanel = ({ scenarioData, simulationResult }) => {
         {suggestions.length === 0 ? (
           <p className="text-xs text-gray-400 italic">No warnings generated for this scenario.</p>
         ) : (
-          suggestions.map((item) => (
-            <div
-              key={item.id}
-              className={`p-3.5 rounded-lg border flex items-start gap-3 transition-all ${getCardStyle(item.type)}`}
-            >
-              {getIcon(item.type)}
-              <div className="space-y-1">
-                <h4 className="text-xs font-bold tracking-wide uppercase">{item.title}</h4>
-                <p className="text-xs leading-relaxed opacity-90">{item.message}</p>
-              </div>
-            </div>
-          ))
+          <motion.div
+            variants={staggerContainer}
+            initial="initial"
+            animate="animate"
+            className="space-y-3"
+          >
+            {suggestions.map((item) => (
+              <motion.div
+                key={item.id}
+                variants={staggerItem}
+                layout
+                className={`p-3.5 rounded-lg border flex items-start gap-3 transition-colors ${getCardStyle(item.type)}`}
+              >
+                {getIcon(item.type)}
+                <div className="space-y-1">
+                  <h4 className="text-xs font-bold tracking-wide uppercase">{item.title}</h4>
+                  <p className="text-xs leading-relaxed opacity-90">{item.message}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         )}
       </div>
     </div>

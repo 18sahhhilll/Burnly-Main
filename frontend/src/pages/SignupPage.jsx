@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Flame, Mail, Lock, User, Eye, EyeOff, Loader2, AlertCircle, ArrowLeft, Check } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
+import { fadeUp } from '../lib/animations.js';
 
 const PasswordStrength = ({ password }) => {
   const checks = [
@@ -20,7 +22,9 @@ const PasswordStrength = ({ password }) => {
         {[0, 1, 2].map((i) => (
           <div
             key={i}
-            className={`h-1 flex-1 rounded-full transition-colors ${i < passed ? colors[passed - 1] : 'bg-[#222E42]'}`}
+            className={`h-1 flex-1 rounded-full transition-colors duration-200 ${
+              i < passed ? colors[passed - 1] : 'bg-[#222E42]'
+            }`}
           />
         ))}
       </div>
@@ -28,7 +32,9 @@ const PasswordStrength = ({ password }) => {
         {checks.map((c) => (
           <span
             key={c.label}
-            className={`flex items-center gap-1 text-[11px] ${c.pass ? 'text-emerald-400' : 'text-gray-500'}`}
+            className={`flex items-center gap-1 text-[11px] transition-colors duration-150 ${
+              c.pass ? 'text-emerald-400' : 'text-gray-500'
+            }`}
           >
             <Check className="w-3 h-3" />
             {c.label}
@@ -89,8 +95,8 @@ export const SignupPage = () => {
     <div className="min-h-screen bg-[#0E1420] flex flex-col">
       {/* Top nav */}
       <div className="px-6 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center">
+        <Link to="/" className="flex items-center gap-2 group">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center group-hover:scale-105 transition-transform">
             <Flame className="w-4 h-4 text-white" />
           </div>
           <span className="font-bold text-white text-base">Burnly</span>
@@ -102,19 +108,32 @@ export const SignupPage = () => {
       </div>
 
       <div className="flex-1 flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md">
+        <motion.div
+          variants={fadeUp}
+          initial="initial"
+          animate="animate"
+          className="w-full max-w-md"
+        >
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-white">Create your account</h1>
+            <h1 className="text-2xl font-bold text-white tracking-tight">Create your account</h1>
             <p className="text-gray-400 mt-2 text-sm">Start modeling your startup's financial runway</p>
           </div>
 
           <div className="bg-[#151D2A] border border-[#222E42] rounded-2xl p-8 shadow-2xl space-y-5">
-            {error && (
-              <div className="bg-red-950/50 border border-red-900/60 p-3 rounded-lg flex items-start gap-2.5 text-sm text-red-300">
-                <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-                <span>{error}</span>
-              </div>
-            )}
+            <AnimatePresence>
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8, height: 0 }}
+                  animate={{ opacity: 1, y: 0, height: 'auto' }}
+                  exit={{ opacity: 0, y: -4, height: 0 }}
+                  transition={{ duration: 0.18 }}
+                  className="bg-red-950/50 border border-red-900/60 p-3 rounded-lg flex items-start gap-2.5 text-sm text-red-300 overflow-hidden"
+                >
+                  <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                  <span>{error}</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Full Name */}
@@ -171,7 +190,8 @@ export const SignupPage = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-300"
+                    className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-300 p-1"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -201,7 +221,8 @@ export const SignupPage = () => {
                   <button
                     type="button"
                     onClick={() => setShowConfirm(!showConfirm)}
-                    className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-300"
+                    className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-300 p-1"
+                    aria-label={showConfirm ? 'Hide confirm password' : 'Show confirm password'}
                   >
                     {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -217,7 +238,7 @@ export const SignupPage = () => {
                   type="checkbox"
                   checked={agreed}
                   onChange={(e) => setAgreed(e.target.checked)}
-                  className="mt-0.5 accent-blue-500"
+                  className="mt-0.5 accent-blue-500 cursor-pointer"
                 />
                 <span className="text-xs text-gray-400 leading-relaxed">
                   I understand that Burnly is a financial planning tool and projections do not constitute financial, legal, or investment advice.
@@ -228,7 +249,7 @@ export const SignupPage = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 text-sm shadow-lg shadow-blue-900/20"
+                className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all active:scale-98 flex items-center justify-center gap-2 text-sm shadow-lg shadow-blue-900/20 cursor-pointer"
               >
                 {loading ? (
                   <>
@@ -248,7 +269,7 @@ export const SignupPage = () => {
               </Link>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

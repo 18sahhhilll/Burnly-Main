@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Flame, Mail, Lock, Eye, EyeOff, Loader2, AlertCircle, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
+import { fadeUp } from '../lib/animations.js';
 
 export const LoginPage = () => {
   const { login } = useAuth();
@@ -35,8 +37,8 @@ export const LoginPage = () => {
     <div className="min-h-screen bg-[#0E1420] flex flex-col">
       {/* Top nav */}
       <div className="px-6 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center">
+        <Link to="/" className="flex items-center gap-2 group">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center group-hover:scale-105 transition-transform">
             <Flame className="w-4 h-4 text-white" />
           </div>
           <span className="font-bold text-white text-base">Burnly</span>
@@ -49,19 +51,32 @@ export const LoginPage = () => {
 
       {/* Card */}
       <div className="flex-1 flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md">
+        <motion.div
+          variants={fadeUp}
+          initial="initial"
+          animate="animate"
+          className="w-full max-w-md"
+        >
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-white">Welcome back</h1>
+            <h1 className="text-2xl font-bold text-white tracking-tight">Welcome back</h1>
             <p className="text-gray-400 mt-2 text-sm">Sign in to your Burnly account to continue</p>
           </div>
 
           <div className="bg-[#151D2A] border border-[#222E42] rounded-2xl p-8 shadow-2xl space-y-5">
-            {error && (
-              <div className="bg-red-950/50 border border-red-900/60 p-3 rounded-lg flex items-start gap-2.5 text-sm text-red-300">
-                <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-                <span>{error}</span>
-              </div>
-            )}
+            <AnimatePresence>
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8, height: 0 }}
+                  animate={{ opacity: 1, y: 0, height: 'auto' }}
+                  exit={{ opacity: 0, y: -4, height: 0 }}
+                  transition={{ duration: 0.18 }}
+                  className="bg-red-950/50 border border-red-900/60 p-3 rounded-lg flex items-start gap-2.5 text-sm text-red-300 overflow-hidden"
+                >
+                  <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                  <span>{error}</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Email */}
@@ -108,7 +123,8 @@ export const LoginPage = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-300 transition-colors"
+                    className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-300 transition-colors p-1"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -119,7 +135,7 @@ export const LoginPage = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 text-sm shadow-lg shadow-blue-900/20 mt-2"
+                className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all active:scale-98 flex items-center justify-center gap-2 text-sm shadow-lg shadow-blue-900/20 mt-2 cursor-pointer"
               >
                 {loading ? (
                   <>
@@ -139,7 +155,7 @@ export const LoginPage = () => {
               </Link>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

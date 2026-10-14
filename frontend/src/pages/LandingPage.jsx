@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Flame,
   BarChart3,
@@ -10,31 +11,33 @@ import {
   ArrowRight,
   Check,
   ChevronDown,
-  ChevronUp,
   Zap,
   MapPin,
   Presentation,
   Users2,
-  IndianRupee,
   Clock,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
+import { ease } from '../lib/animations.js';
 
 // ─── Sub-components ─────────────────────────────────────────────────────────
 
 const Feature = ({ icon: Icon, title, description, color }) => (
-  <div className="p-6 bg-[#151D2A] border border-[#222E42] rounded-xl space-y-3 hover:border-blue-800/50 transition-colors">
+  <motion.div
+    whileHover={{ y: -3, transition: { duration: 0.18, ease: ease.out } }}
+    className="p-6 bg-[#151D2A] border border-[#222E42] rounded-xl space-y-3 hover:border-blue-800/50 hover:shadow-lg hover:shadow-blue-950/20 transition-colors"
+  >
     <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${color}`}>
       <Icon className="w-5 h-5" />
     </div>
     <h3 className="font-semibold text-gray-100 text-base">{title}</h3>
     <p className="text-sm text-gray-400 leading-relaxed">{description}</p>
-  </div>
+  </motion.div>
 );
 
 const Step = ({ number, title, description }) => (
   <div className="flex gap-4">
-    <div className="flex-shrink-0 w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm">
+    <div className="flex-shrink-0 w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-xs">
       {number}
     </div>
     <div>
@@ -49,13 +52,31 @@ const FaqItem = ({ question, answer }) => {
   return (
     <div className="border-b border-[#222E42]">
       <button
-        className="w-full flex items-center justify-between py-4 text-left text-sm font-medium text-gray-200 hover:text-white transition-colors"
+        className="w-full flex items-center justify-between py-4 text-left text-sm font-medium text-gray-200 hover:text-white transition-colors cursor-pointer"
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
       >
-        {question}
-        {open ? <ChevronUp className="w-4 h-4 text-gray-400 shrink-0" /> : <ChevronDown className="w-4 h-4 text-gray-400 shrink-0" />}
+        <span>{question}</span>
+        <motion.div
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.2, ease: ease.out }}
+        >
+          <ChevronDown className="w-4 h-4 text-gray-400 shrink-0" />
+        </motion.div>
       </button>
-      {open && <p className="pb-4 text-sm text-gray-400 leading-relaxed">{answer}</p>}
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.22, ease: ease.out }}
+            className="overflow-hidden"
+          >
+            <p className="pb-4 text-sm text-gray-400 leading-relaxed">{answer}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

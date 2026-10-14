@@ -1,5 +1,7 @@
 import React from 'react';
-import { Plus, Trash2, Users, IndianRupee, TrendingUp, ShieldAlert, Building, Server, Megaphone, UserCheck } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, Trash2, Users, IndianRupee, TrendingUp, Building, Server } from 'lucide-react';
+import { listItemVariants } from '../lib/animations.js';
 
 export const InputForm = ({ scenarioData, onChange }) => {
   const data = scenarioData || {};
@@ -82,7 +84,7 @@ export const InputForm = ({ scenarioData, onChange }) => {
                 min="0"
                 value={data.startingCash ?? 0}
                 onChange={(e) => handleNumberChange('startingCash', e.target.value)}
-                className="w-full bg-[#1A2436] border border-[#222E42] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg pl-7 pr-3 py-2 text-sm text-white font-mono transition-colors"
+                className="w-full bg-[#1A2436] border border-[#222E42] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg pl-7 pr-3 py-2 text-sm text-white font-mono transition-colors outline-none"
                 placeholder="1000000"
               />
             </div>
@@ -99,7 +101,7 @@ export const InputForm = ({ scenarioData, onChange }) => {
                 min="0"
                 value={data.monthlyRevenue ?? 0}
                 onChange={(e) => handleNumberChange('monthlyRevenue', e.target.value)}
-                className="w-full bg-[#1A2436] border border-[#222E42] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg pl-7 pr-3 py-2 text-sm text-white font-mono transition-colors"
+                className="w-full bg-[#1A2436] border border-[#222E42] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg pl-7 pr-3 py-2 text-sm text-white font-mono transition-colors outline-none"
                 placeholder="25000"
               />
             </div>
@@ -117,7 +119,7 @@ export const InputForm = ({ scenarioData, onChange }) => {
                 step="0.5"
                 value={data.revenueGrowthRate ?? 0}
                 onChange={(e) => handleNumberChange('revenueGrowthRate', e.target.value)}
-                className="w-full bg-[#1A2436] border border-[#222E42] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg px-3 py-2 text-sm text-white font-mono transition-colors"
+                className="w-full bg-[#1A2436] border border-[#222E42] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg px-3 py-2 text-sm text-white font-mono transition-colors outline-none"
                 placeholder="5"
               />
               <span className="absolute right-3 top-2.5 text-gray-500 text-sm">%</span>
@@ -145,7 +147,7 @@ export const InputForm = ({ scenarioData, onChange }) => {
               min="0"
               value={data.payrollSpend ?? 0}
               onChange={(e) => handleNumberChange('payrollSpend', e.target.value)}
-              className="w-full bg-[#1A2436] border border-[#222E42] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg px-3 py-2 text-sm text-white font-mono transition-colors"
+              className="w-full bg-[#1A2436] border border-[#222E42] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg px-3 py-2 text-sm text-white font-mono transition-colors outline-none"
             />
           </div>
 
@@ -158,7 +160,7 @@ export const InputForm = ({ scenarioData, onChange }) => {
               min="0"
               value={data.founderSalary ?? 0}
               onChange={(e) => handleNumberChange('founderSalary', e.target.value)}
-              className="w-full bg-[#1A2436] border border-[#222E42] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg px-3 py-2 text-sm text-white font-mono transition-colors"
+              className="w-full bg-[#1A2436] border border-[#222E42] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg px-3 py-2 text-sm text-white font-mono transition-colors outline-none"
             />
           </div>
 
@@ -171,7 +173,7 @@ export const InputForm = ({ scenarioData, onChange }) => {
               min="0"
               value={data.marketingSpend ?? 0}
               onChange={(e) => handleNumberChange('marketingSpend', e.target.value)}
-              className="w-full bg-[#1A2436] border border-[#222E42] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg px-3 py-2 text-sm text-white font-mono transition-colors"
+              className="w-full bg-[#1A2436] border border-[#222E42] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg px-3 py-2 text-sm text-white font-mono transition-colors outline-none"
             />
           </div>
 
@@ -184,7 +186,7 @@ export const InputForm = ({ scenarioData, onChange }) => {
               min="0"
               value={data.infrastructureSpend ?? 0}
               onChange={(e) => handleNumberChange('infrastructureSpend', e.target.value)}
-              className="w-full bg-[#1A2436] border border-[#222E42] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg px-3 py-2 text-sm text-white font-mono transition-colors"
+              className="w-full bg-[#1A2436] border border-[#222E42] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg px-3 py-2 text-sm text-white font-mono transition-colors outline-none"
             />
           </div>
 
@@ -197,7 +199,7 @@ export const InputForm = ({ scenarioData, onChange }) => {
               min="0"
               value={data.opsSpend ?? 0}
               onChange={(e) => handleNumberChange('opsSpend', e.target.value)}
-              className="w-full bg-[#1A2436] border border-[#222E42] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg px-3 py-2 text-sm text-white font-mono transition-colors"
+              className="w-full bg-[#1A2436] border border-[#222E42] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg px-3 py-2 text-sm text-white font-mono transition-colors outline-none"
             />
           </div>
         </div>
@@ -220,7 +222,7 @@ export const InputForm = ({ scenarioData, onChange }) => {
           <button
             type="button"
             onClick={addHireRow}
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-400 bg-blue-950/70 hover:bg-blue-900 border border-blue-700/50 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-400 bg-blue-950/70 hover:bg-blue-900 border border-blue-700/50 px-3 py-1.5 rounded-lg transition-all active:scale-95 cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" />
             Add Hire Row
@@ -233,81 +235,88 @@ export const InputForm = ({ scenarioData, onChange }) => {
           </div>
         ) : (
           <div className="space-y-2.5">
-            {hiringTimeline.map((hire, index) => (
-              <div
-                key={hire.id || index}
-                className="bg-[#1A2436] border border-[#222E42] rounded-lg p-3 grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-center transition-all hover:border-gray-600"
-              >
-                {/* Role Title */}
-                <div className="sm:col-span-5">
-                  <label className="block text-[10px] text-gray-400 uppercase font-medium mb-0.5">
-                    Role / Position Title
-                  </label>
-                  <input
-                    type="text"
-                    value={hire.role || ''}
-                    onChange={(e) => updateHireRow(index, 'role', e.target.value)}
-                    placeholder="e.g. Senior Backend Engineer"
-                    className="w-full bg-[#151D2A] border border-[#222E42] rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
-                  />
-                </div>
+            <AnimatePresence initial={false}>
+              {hiringTimeline.map((hire, index) => (
+                <motion.div
+                  key={hire.id || index}
+                  layout
+                  initial={{ opacity: 0, y: -10, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.15 } }}
+                  transition={{ duration: 0.2 }}
+                  className="bg-[#1A2436] border border-[#222E42] rounded-lg p-3 grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-center transition-colors hover:border-gray-600"
+                >
+                  {/* Role Title */}
+                  <div className="sm:col-span-5">
+                    <label className="block text-[10px] text-gray-400 uppercase font-medium mb-0.5">
+                      Role / Position Title
+                    </label>
+                    <input
+                      type="text"
+                      value={hire.role || ''}
+                      onChange={(e) => updateHireRow(index, 'role', e.target.value)}
+                      placeholder="e.g. Senior Backend Engineer"
+                      className="w-full bg-[#151D2A] border border-[#222E42] rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500 transition-colors"
+                    />
+                  </div>
 
-                {/* Start Month */}
-                <div className="sm:col-span-2">
-                  <label className="block text-[10px] text-gray-400 uppercase font-medium mb-0.5">
-                    Start Month
-                  </label>
-                  <input
-                    type="number"
-                    min="1"
-                    max="36"
-                    value={hire.startMonth ?? 1}
-                    onChange={(e) => updateHireRow(index, 'startMonth', e.target.value)}
-                    className="w-full bg-[#151D2A] border border-[#222E42] rounded px-2 py-1.5 text-xs text-white text-center font-mono focus:outline-none focus:border-blue-500"
-                  />
-                </div>
+                  {/* Start Month */}
+                  <div className="sm:col-span-2">
+                    <label className="block text-[10px] text-gray-400 uppercase font-medium mb-0.5">
+                      Start Month
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="36"
+                      value={hire.startMonth ?? 1}
+                      onChange={(e) => updateHireRow(index, 'startMonth', e.target.value)}
+                      className="w-full bg-[#151D2A] border border-[#222E42] rounded px-2 py-1.5 text-xs text-white text-center font-mono focus:outline-none focus:border-blue-500 transition-colors"
+                    />
+                  </div>
 
-                {/* Count */}
-                <div className="sm:col-span-2">
-                  <label className="block text-[10px] text-gray-400 uppercase font-medium mb-0.5">
-                    Headcount
-                  </label>
-                  <input
-                    type="number"
-                    min="1"
-                    value={hire.count ?? 1}
-                    onChange={(e) => updateHireRow(index, 'count', e.target.value)}
-                    className="w-full bg-[#151D2A] border border-[#222E42] rounded px-2 py-1.5 text-xs text-white text-center font-mono focus:outline-none focus:border-blue-500"
-                  />
-                </div>
+                  {/* Count */}
+                  <div className="sm:col-span-2">
+                    <label className="block text-[10px] text-gray-400 uppercase font-medium mb-0.5">
+                      Headcount
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={hire.count ?? 1}
+                      onChange={(e) => updateHireRow(index, 'count', e.target.value)}
+                      className="w-full bg-[#151D2A] border border-[#222E42] rounded px-2 py-1.5 text-xs text-white text-center font-mono focus:outline-none focus:border-blue-500 transition-colors"
+                    />
+                  </div>
 
-                {/* Monthly Salary per Hire */}
-                <div className="sm:col-span-2">
-                  <label className="block text-[10px] text-gray-400 uppercase font-medium mb-0.5">
-                    Salary (₹/mo)
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    value={hire.monthlySalary ?? 0}
-                    onChange={(e) => updateHireRow(index, 'monthlySalary', e.target.value)}
-                    className="w-full bg-[#151D2A] border border-[#222E42] rounded px-2 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-blue-500"
-                  />
-                </div>
+                  {/* Monthly Salary per Hire */}
+                  <div className="sm:col-span-2">
+                    <label className="block text-[10px] text-gray-400 uppercase font-medium mb-0.5">
+                      Salary (₹/mo)
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={hire.monthlySalary ?? 0}
+                      onChange={(e) => updateHireRow(index, 'monthlySalary', e.target.value)}
+                      className="w-full bg-[#151D2A] border border-[#222E42] rounded px-2 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-blue-500 transition-colors"
+                    />
+                  </div>
 
-                {/* Remove button */}
-                <div className="sm:col-span-1 flex justify-end pt-3 sm:pt-0">
-                  <button
-                    type="button"
-                    onClick={() => removeHireRow(index)}
-                    title="Remove Hire"
-                    className="text-gray-400 hover:text-red-400 p-1.5 rounded hover:bg-red-950/40 transition-colors cursor-pointer"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            ))}
+                  {/* Remove button */}
+                  <div className="sm:col-span-1 flex justify-end pt-3 sm:pt-0">
+                    <button
+                      type="button"
+                      onClick={() => removeHireRow(index)}
+                      title="Remove Hire"
+                      className="text-gray-400 hover:text-red-400 p-1.5 rounded hover:bg-red-950/40 transition-colors cursor-pointer active:scale-95"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
         )}
       </div>

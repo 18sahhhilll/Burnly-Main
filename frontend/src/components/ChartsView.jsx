@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ResponsiveContainer,
   AreaChart,
   Area,
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   Tooltip,
@@ -14,7 +13,8 @@ import {
   Bar,
   Legend,
 } from 'recharts';
-import { IndianRupee, TrendingUp, Layers } from 'lucide-react';
+import { IndianRupee, TrendingUp } from 'lucide-react';
+import { fadeIn } from '../lib/animations.js';
 
 export const ChartsView = ({ monthlyProjections = [] }) => {
   const [chartType, setChartType] = useState('cash'); // 'cash' | 'revenue-expenses'
@@ -70,89 +70,127 @@ export const ChartsView = ({ monthlyProjections = [] }) => {
           )}
         </h3>
 
-        <div className="flex items-center gap-1 bg-[#1A2436] p-1 rounded-lg border border-[#222E42]">
+        {/* Animated segmented control */}
+        <div className="flex items-center gap-1 bg-[#1A2436] p-1 rounded-lg border border-[#222E42] relative">
           <button
             onClick={() => setChartType('cash')}
-            className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
-              chartType === 'cash'
-                ? 'bg-blue-600 text-white'
-                : 'text-gray-400 hover:text-white'
+            className={`relative px-3 py-1 text-xs font-medium rounded transition-colors z-10 cursor-pointer ${
+              chartType === 'cash' ? 'text-white' : 'text-gray-400 hover:text-white'
             }`}
           >
-            Cash Balance
+            {chartType === 'cash' && (
+              <motion.div
+                layoutId="chart-type-pill"
+                className="absolute inset-0 bg-blue-600 rounded"
+                transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+              />
+            )}
+            <span className="relative z-10">Cash Balance</span>
           </button>
           <button
             onClick={() => setChartType('revenue-expenses')}
-            className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
-              chartType === 'revenue-expenses'
-                ? 'bg-blue-600 text-white'
-                : 'text-gray-400 hover:text-white'
+            className={`relative px-3 py-1 text-xs font-medium rounded transition-colors z-10 cursor-pointer ${
+              chartType === 'revenue-expenses' ? 'text-white' : 'text-gray-400 hover:text-white'
             }`}
           >
-            Rev vs Expenses
+            {chartType === 'revenue-expenses' && (
+              <motion.div
+                layoutId="chart-type-pill"
+                className="absolute inset-0 bg-blue-600 rounded"
+                transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+              />
+            )}
+            <span className="relative z-10">Rev vs Expenses</span>
           </button>
         </div>
       </div>
 
       <div className="h-72 w-full pt-2">
-        <ResponsiveContainer width="100%" height="100%">
-          {chartType === 'cash' ? (
-            <AreaChart data={monthlyProjections} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
-              <defs>
-                <linearGradient id="cashGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.4} />
-                  <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#222E42" />
-              <XAxis
-                dataKey="month"
-                stroke="#8A99AD"
-                fontSize={11}
-                tickLine={false}
-                tickFormatter={(m) => `M${m}`}
-              />
-              <YAxis
-                stroke="#8A99AD"
-                fontSize={11}
-                tickLine={false}
-                tickFormatter={formatCurrency}
-              />
-              <Tooltip content={<CustomTooltip />} />
-              <ReferenceLine y={0} stroke="#EF4444" strokeDasharray="3 3" label={{ value: 'Zero Cash', fill: '#EF4444', fontSize: 10 }} />
-              <Area
-                type="monotone"
-                dataKey="endingCash"
-                name="Ending Cash"
-                stroke="#3B82F6"
-                strokeWidth={2}
-                fillOpacity={1}
-                fill="url(#cashGradient)"
-              />
-            </AreaChart>
-          ) : (
-            <BarChart data={monthlyProjections} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#222E42" />
-              <XAxis
-                dataKey="month"
-                stroke="#8A99AD"
-                fontSize={11}
-                tickLine={false}
-                tickFormatter={(m) => `M${m}`}
-              />
-              <YAxis
-                stroke="#8A99AD"
-                fontSize={11}
-                tickLine={false}
-                tickFormatter={formatCurrency}
-              />
-              <Tooltip content={<CustomTooltip />} />
-              <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
-              <Bar dataKey="revenue" name="Monthly Revenue" fill="#10B981" radius={[2, 2, 0, 0]} />
-              <Bar dataKey="expenses" name="Monthly Expenses" fill="#F43F5E" radius={[2, 2, 0, 0]} />
-            </BarChart>
-          )}
-        </ResponsiveContainer>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={chartType}
+            variants={fadeIn}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            className="w-full h-full"
+          >
+            <ResponsiveContainer width="100%" height="100%">
+              {chartType === 'cash' ? (
+                <AreaChart data={monthlyProjections} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="cashGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#222E42" />
+                  <XAxis
+                    dataKey="month"
+                    stroke="#8A99AD"
+                    fontSize={11}
+                    tickLine={false}
+                    tickFormatter={(m) => `M${m}`}
+                  />
+                  <YAxis
+                    stroke="#8A99AD"
+                    fontSize={11}
+                    tickLine={false}
+                    tickFormatter={formatCurrency}
+                  />
+                  <Tooltip content={<CustomTooltip />} />
+                  <ReferenceLine y={0} stroke="#EF4444" strokeDasharray="3 3" label={{ value: 'Zero Cash', fill: '#EF4444', fontSize: 10 }} />
+                  <Area
+                    type="monotone"
+                    dataKey="endingCash"
+                    name="Ending Cash"
+                    stroke="#3B82F6"
+                    strokeWidth={2}
+                    fillOpacity={1}
+                    fill="url(#cashGradient)"
+                    isAnimationActive={true}
+                    animationDuration={450}
+                  />
+                </AreaChart>
+              ) : (
+                <BarChart data={monthlyProjections} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#222E42" />
+                  <XAxis
+                    dataKey="month"
+                    stroke="#8A99AD"
+                    fontSize={11}
+                    tickLine={false}
+                    tickFormatter={(m) => `M${m}`}
+                  />
+                  <YAxis
+                    stroke="#8A99AD"
+                    fontSize={11}
+                    tickLine={false}
+                    tickFormatter={formatCurrency}
+                  />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
+                  <Bar
+                    dataKey="revenue"
+                    name="Monthly Revenue"
+                    fill="#10B981"
+                    radius={[2, 2, 0, 0]}
+                    isAnimationActive={true}
+                    animationDuration={450}
+                  />
+                  <Bar
+                    dataKey="expenses"
+                    name="Monthly Expenses"
+                    fill="#F43F5E"
+                    radius={[2, 2, 0, 0]}
+                    isAnimationActive={true}
+                    animationDuration={450}
+                  />
+                </BarChart>
+              )}
+            </ResponsiveContainer>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );
