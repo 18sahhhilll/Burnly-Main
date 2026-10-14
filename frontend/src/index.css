@@ -3,12 +3,40 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --bg-main: #080C14;
+    --bg-surface: #0E1524;
+    --bg-card: rgba(19, 27, 46, 0.7);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-active: rgba(59, 130, 246, 0.5);
+    
+    /* Semantic fintech colors */
+    --color-runway: #10B981;
+    --color-burn: #F43F5E;
+    --color-warning: #F59E0B;
+    --color-brand: #3B82F6;
+    --color-brand-indigo: #6366F1;
+  }
+
   body {
-    background-color: #0E1420;
+    background-color: var(--bg-main);
     color: #E8EAF0;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    letter-spacing: -0.025em;
+  }
+
+  /* Tabular numbers for all financial metrics */
+  .font-mono, td, .metric-value {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
   }
 
   /* Accessible focus styling */
@@ -32,6 +60,55 @@
   input, select, textarea {
     transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
   }
+}
+
+/* ─── Premium Glassmorphism & Surface Utilities ─── */
+.glass-panel {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%), rgba(14, 21, 36, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-hover {
+  transition: all 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.glass-panel-hover:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
+}
+
+/* ─── Subtle Terminal Grid Background ─── */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.bg-dot-pattern {
+  background-size: 24px 24px;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+}
+
+/* ─── Animated Aurora Gradient Mesh ─── */
+.aurora-bg {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 600px;
+  background: 
+    radial-gradient(ellipse 60% 40% at 50% -10%, rgba(59, 130, 246, 0.2), transparent 70%),
+    radial-gradient(ellipse 40% 30% at 30% 15%, rgba(99, 102, 241, 0.15), transparent 60%),
+    radial-gradient(ellipse 40% 30% at 70% 15%, rgba(16, 185, 129, 0.08), transparent 60%);
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* Reduced motion preference support */
