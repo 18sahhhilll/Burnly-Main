@@ -21,6 +21,7 @@ import {
   Sliders,
   CheckSquare,
 } from 'lucide-react';
+import { ReportSkeleton } from './common/SkeletonLoader.jsx';
 
 // Helper to compute sha256 inputs hash in browser
 async function computeClientInputsHash(venture, scenarioData) {
@@ -349,6 +350,10 @@ export const ReportView = ({ type, activeScenario, activeVenture, token, onOpenA
         </div>
       </div>
     );
+  }
+
+  if (fetchingExisting && !report) {
+    return <ReportSkeleton />;
   }
 
   if (!report && !fetchingExisting) {

@@ -2,6 +2,9 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 
+import { TopProgressBar } from '../components/common/TopProgressBar.jsx';
+import { ScrollToTop } from '../components/common/ScrollToTop.jsx';
+
 // Layouts
 import { AppLayout } from '../layouts/AppLayout.jsx';
 
@@ -31,13 +34,6 @@ const GuestOnlyRoute = ({ children }) => {
   return children;
 };
 
-// Convenience: protect + wrap in app layout
-const AppPage = ({ children }) => (
-  <ProtectedRoute>
-    <AppLayout>{children}</AppLayout>
-  </ProtectedRoute>
-);
-
 // 404 wrapper (works outside of router context)
 const NotFound404 = () => (
   <div className="min-h-screen bg-[#0E1420]">
@@ -48,6 +44,8 @@ const NotFound404 = () => (
 export const AppRouter = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
+      <TopProgressBar />
       <Routes>
         {/* ── Public ── */}
         <Route path="/" element={<LandingPage />} />
@@ -57,17 +55,25 @@ export const AppRouter = () => {
         <Route path="/signup" element={<GuestOnlyRoute><SignupPage /></GuestOnlyRoute>} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-        {/* ── Protected app ── */}
-        <Route path="/dashboard"         element={<AppPage><DashboardPage /></AppPage>} />
-        <Route path="/simulator"         element={<AppPage><SimulatorPage /></AppPage>} />
-        <Route path="/projections"       element={<AppPage><ProjectionsPage /></AppPage>} />
-        <Route path="/compare"           element={<AppPage><ComparePage /></AppPage>} />
-        <Route path="/market"            element={<AppPage><MarketPage /></AppPage>} />
-        <Route path="/competitors"       element={<AppPage><CompetitorsPage /></AppPage>} />
-        <Route path="/roadmap"           element={<AppPage><RoadmapPage /></AppPage>} />
-        <Route path="/pitch-outline"     element={<AppPage><PitchPage /></AppPage>} />
-        <Route path="/risk-intelligence" element={<AppPage><RiskPage /></AppPage>} />
-        <Route path="/profile"           element={<AppPage><ProfilePage /></AppPage>} />
+        {/* ── Protected app (persistent layout ensures shared sidebar/header do not remount) ── */}
+        <Route
+          element={
+            <ProtectedRoute>
+              <AppLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/dashboard"         element={<DashboardPage />} />
+          <Route path="/simulator"         element={<SimulatorPage />} />
+          <Route path="/projections"       element={<ProjectionsPage />} />
+          <Route path="/compare"           element={<ComparePage />} />
+          <Route path="/market"            element={<MarketPage />} />
+          <Route path="/competitors"       element={<CompetitorsPage />} />
+          <Route path="/roadmap"           element={<RoadmapPage />} />
+          <Route path="/pitch-outline"     element={<PitchPage />} />
+          <Route path="/risk-intelligence" element={<RiskPage />} />
+          <Route path="/profile"           element={<ProfilePage />} />
+        </Route>
 
         {/* ── 404 catch-all ── */}
         <Route path="*" element={<NotFound404 />} />

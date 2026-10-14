@@ -4,6 +4,8 @@ import { useVenture } from '../context/VentureContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 
+import { ReportSkeleton } from '../components/common/SkeletonLoader.jsx';
+
 const ReportView = React.lazy(() =>
   import('../components/ReportView.jsx').then((m) => ({ default: m.ReportView }))
 );
@@ -20,14 +22,7 @@ const IntelligencePage = ({ type, title, subtitle }) => {
         <h1 className="text-2xl font-bold text-white">{title}</h1>
         <p className="text-sm text-gray-400 mt-1">{subtitle}</p>
       </div>
-      <Suspense
-        fallback={
-          <div className="flex items-center justify-center py-16 gap-3 text-gray-400">
-            <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-            Loading...
-          </div>
-        }
-      >
+      <Suspense fallback={<ReportSkeleton />}>
         <ReportView
           type={type}
           activeScenario={activeScenario}

@@ -7,6 +7,7 @@ import { useVenture } from '../context/VentureContext.jsx';
 import { MetricsOverview } from '../components/MetricsOverview.jsx';
 import { ChartsView } from '../components/ChartsView.jsx';
 import { staggerContainer, staggerItem } from '../lib/animations.js';
+import { DashboardSkeleton } from '../components/common/SkeletonLoader.jsx';
 
 const QuickLink = ({ to, icon: Icon, label, description, color }) => (
   <motion.div
@@ -33,6 +34,10 @@ const QuickLink = ({ to, icon: Icon, label, description, color }) => (
 export const DashboardPage = () => {
   const { simulationResult, activeScenario } = useScenario();
   const { activeVenture } = useVenture();
+
+  if (!simulationResult) {
+    return <DashboardSkeleton />;
+  }
 
   const { monthlyProjections = [] } = simulationResult || {};
   const recentMonths = monthlyProjections.slice(0, 6);

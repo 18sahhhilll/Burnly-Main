@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import { useScenario } from '../context/ScenarioContext.jsx';
+import { ProjectionsSkeleton } from '../components/common/SkeletonLoader.jsx';
 
 const ProjectionsView = React.lazy(() =>
   import('../components/ProjectionsView.jsx').then((m) => ({ default: m.ProjectionsView }))
@@ -16,14 +17,7 @@ export const ProjectionsPage = () => {
           36-month financial forecast table and scenario assumptions.
         </p>
       </div>
-      <Suspense
-        fallback={
-          <div className="flex items-center justify-center py-16 gap-3 text-gray-400">
-            <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-            Loading projections...
-          </div>
-        }
-      >
+      <Suspense fallback={<ProjectionsSkeleton />}>
         <ProjectionsView scenarioData={effectiveScenarioData} />
       </Suspense>
     </div>

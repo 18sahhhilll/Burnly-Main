@@ -4,6 +4,7 @@ import { InputForm } from '../components/InputForm.jsx';
 import { ChartsView } from '../components/ChartsView.jsx';
 import { RiskSuggestionsPanel } from '../components/RiskSuggestionsPanel.jsx';
 import { useScenario } from '../context/ScenarioContext.jsx';
+import { SimulatorSkeleton } from '../components/common/SkeletonLoader.jsx';
 
 export const SimulatorPage = () => {
   const {
@@ -11,6 +12,10 @@ export const SimulatorPage = () => {
     simulationResult,
     handleScenarioDataChange,
   } = useScenario();
+
+  if (!simulationResult) {
+    return <SimulatorSkeleton />;
+  }
 
   return (
     <div className="space-y-6">
